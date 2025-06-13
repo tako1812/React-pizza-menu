@@ -66,49 +66,44 @@ function Header() {
 }
 function Menu() {
   const pizzas = pizzaData;
-  //const pizzas = [];
   const numPizzas = pizzas.length;
-
   return (
     <main className="menu">
       <h2>Our menu</h2>
-
       {pizzas > 0 ? (
-        <ul className="pizzas">
-          {pizzas.map((pizza) => (
-            <Pizza pizzaObj={pizza} key={pizza.name} />
-          ))}
-        </ul>
+        <>
+          <p>
+            Authentic italian cuisine. 6 creative dishes to choose from. All
+            from our stone oven, all organic, all delicious.
+          </p>
+
+          <ul className="pizzas">
+            {pizzas.map((pizza) => (
+              <Pizza pizzaObj={pizza} key={pizza.name} />
+            ))}
+          </ul>
+        </>
       ) : (
         <p>we are still working on our menu, please come back later:)</p>
       )}
-      {/*<Pizza
-        name="Pizza Spinaci"
-        ingredients="tomato, mozarella, spinach, and ricotta cheese"
-        photoName="pizzas/spinaci.jpg"
-        price={10}
-      />
-      <Pizza
-        name="Pizza Funghi"
-        ingredients="tomato, mushrooms"
-        photoName="pizzas/funghi.jpg"
-        price={12}
-      />*/}
     </main>
   );
 }
-function Pizza(props) {
-  console.log(props);
+function Pizza({ pizzaObj }) {
+  console.log(pizzaObj);
 
-  if (props.pizzaObj.soldOut) return null;
   return (
-    <li className="pizza">
-      <img src={props.pizzaObj.photoName} alt={props.pizzaObj.name}></img>
+    <li className={`pizza ${pizzaObj.soldOut ? "Sold out" : ""}`}>
+      <img src={pizzaObj.photoName} alt={pizzaObj.name}></img>
       <div>
-        <h3>{props.pizzaObj.name}</h3>
-        <p>{props.pizzaObj.ingredients}</p>
+        <h3>{pizzaObj.name}</h3>
+        <p>{pizzaObj.ingredients}</p>
+        {/*setting the element conditionally
+       {pizzaObj.soldOut ? <p>SOULD OUT</p> : pizzaObj.price + 3} */}
+
+        {/*setting the text conditionally*/}
+        <span>{pizzaObj.soldOut ? "SOULD OUT" : pizzaObj.price + 3}</span>
       </div>
-      <span>{props.pizzaObj.price + 3}</span>
     </li>
   );
 }
@@ -122,7 +117,7 @@ function Footer() {
   return (
     <footer className="footer">
       {isOpen ? (
-        <Order openHours={openHour} />
+        <Order openHours={openHour} closeHours={closeHour} />
       ) : (
         <p>
           we are happy to welcome you between {openHour}:00 and {closeHour}:00
@@ -131,11 +126,12 @@ function Footer() {
     </footer>
   );
 }
-function Order(props) {
+function Order({ openHours, closeHours, text }) {
   return (
     <div className="order">
       <p>
-        we are open from {props.openHours}:00. Come visit us or order online.
+        we are open from {openHours}:00 to {closeHours} Come visit us or order
+        online. {test}
       </p>
       <button className="btn">Order</button>
     </div>
